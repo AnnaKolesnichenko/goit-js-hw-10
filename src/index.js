@@ -29,7 +29,7 @@ function onInputSearch(e) {
             onNarrowSearch;
         }
     })
-    .catch(onError);
+    .catch(onErrorAlert);
 }
 
 function renderCountryTitle(countries) {
@@ -63,8 +63,8 @@ function onNarrowSearch() {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
 }
 
-function onError() {
-    Notiflix.Notify.warning("Error! Something went wrong!");
+function onErrorAlert() {
+    Notiflix.Notify.warning("Oops, there is no country with that name");
 }
 
 searchInput.addEventListener('input', _debounce(onInputSearch, DEBOUNCE_DELAY));
