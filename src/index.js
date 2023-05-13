@@ -14,20 +14,25 @@ function onInputSearch(e) {
 
     const inputQuery = searchInput.value.trim();
 
-    fetchCountries.fetchCountry(inputQuery).then(countries => {
+    fetchCountries.fetchCountry(inputQuery)
+    .then(countries => {
         countryTitle.innerHTML = '';
         countryInfo.innerHTML = '';
 
-        if(countries.length === 1) {
-            countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
-            countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
+        if(countries.length >= 10) {
+            onNarrowSearch();
 
+        } else if (inputQuery.trim() === '') {
+            countryTitle.innerHTML = '';
+            countryInfo.innerHTML = '';
+            
         } else if(countries.length > 1) {
             countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
 
-        } else if(countries.length > 10) {
-            onNarrowSearch;
-        }
+        } else if(countries.length === 1) {
+            countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
+            countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
+        }  
     })
     .catch(onErrorAlert);
 }
@@ -64,7 +69,7 @@ function onNarrowSearch() {
 }
 
 function onErrorAlert() {
-    Notiflix.Notify.warning("Oops, there is no country with that name");
+    Notiflix.Notify.failure("Oops, there is no country with that name");
 }
 
 searchInput.addEventListener('input', _debounce(onInputSearch, DEBOUNCE_DELAY));
