@@ -21,6 +21,7 @@ function onInputSearch(e) {
 
         if(countries.length >= 10) {
             onNarrowSearch();
+            return;
 
         } else if (inputQuery.trim() === '') {
             countryTitle.innerHTML = '';
@@ -32,7 +33,9 @@ function onInputSearch(e) {
         } else if(countries.length === 1) {
             countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
             countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
-        }  
+        }  else if(error) {
+            Promise.reject(onErrorAlert);
+        }
     })
     .catch(onErrorAlert);
 }
