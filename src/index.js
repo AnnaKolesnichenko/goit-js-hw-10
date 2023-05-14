@@ -33,7 +33,9 @@ function onInputSearch(e) {
         } else if(countries.length === 1) {
             countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
             countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
-        }  else if(error) {
+        }  
+        
+        if(error) {
             Promise.reject(onErrorAlert);
         }
     })
@@ -54,7 +56,7 @@ function renderCountryTitle(countries) {
 
 function renderCountryInfo(countries) {
     const infoMarkUp = countries.map(({capital, population, languages}) => {
-        const lang = Object.values(languages);
+        const lang = Object.values(languages).join('');
         return `
                 <ul class="country list">
                     <li class="country-capital"><p><b>Capital</b>: ${capital}</p></li>
