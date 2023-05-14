@@ -16,30 +16,33 @@ function onInputSearch(e) {
 
     fetchCountries.fetchCountry(inputQuery)
     .then(countries => {
-        countryTitle.innerHTML = '';
-        countryInfo.innerHTML = '';
+        clearFields();
 
-        if(countries.length >= 10) {
+        if(countries.length > 10) {
             onNarrowSearch();
             return;
 
         } else if (inputQuery.trim() === '') {
-            countryTitle.innerHTML = '';
-            countryInfo.innerHTML = '';
+            clearFields();
             
-        } else if(countries.length > 1) {
+        } else if(countries.length === 1) {
+            //countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
+            countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
+        
+        } else if(countries.length >= 2 || countries.length <= 10) {
             countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
 
-        } else if(countries.length === 1) {
-            countryTitle.insertAdjacentHTML('beforeend', renderCountryTitle(countries));
-            countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries));
-        }  
-        
-        if(error) {
-            Promise.reject(onErrorAlert);
-        }
+        }        
+    
     })
-    .catch(onErrorAlert);
+    .catch((error) => {
+        if(error.message === '404') {
+            Notiflix.Notify.failure("Oops, there is no country with that name");
+        } else {
+            Notiflix.Notify.failure(error.message);
+        }
+        clearFields();
+});
 }
 
 function renderCountryTitle(countries) {
@@ -55,10 +58,14 @@ function renderCountryTitle(countries) {
 }
 
 function renderCountryInfo(countries) {
-    const infoMarkUp = countries.map(({capital, population, languages}) => {
-        const lang = Object.values(languages).join('');
+    const infoMarkUp = countries.map(({name, flags, capital, population, languages}) => {
+        const lang = Object.values(languages).join(', ');
         return `
                 <ul class="country list">
+                    <li class="list-item" >
+                        <img class="list-item_flag" src="${flags.svg}" alt="${name}" >
+                        <h1 class="list-item_name"><b>${name.official}</b></h1> 
+                    </li>
                     <li class="country-capital"><p><b>Capital</b>: ${capital}</p></li>
                     <li class="country-population"><p><b>Populaiton</b>: ${population}</p></li>
                     <li class="country-langs"><b>Languages</b>: ${lang}</li>
@@ -68,6 +75,10 @@ function renderCountryInfo(countries) {
         return infoMarkUp;
 }
 
+function clearFields() {
+    countryTitle.innerHTML = '';
+    countryInfo.innerHTML = '';
+}
 
 function onNarrowSearch() {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
