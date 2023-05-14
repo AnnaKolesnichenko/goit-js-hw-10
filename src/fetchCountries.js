@@ -4,7 +4,8 @@ function fetchCountry(country) {
     return fetch(`${BASE_URL}${country}`)
     .then(response => {
         if(!response.ok) {
-            throw new Error(response.statusText);
+            console.dir(response);
+            throw new Error(response.status);
         }
         return response.json();
     })

@@ -36,7 +36,7 @@ function onInputSearch(e) {
     
     })
     .catch((error) => {
-        if(error.status === '404') {
+        if(error.status = '404') {
             Notiflix.Notify.failure("Oops, there is no country with that name");
         } else {
             Notiflix.Notify.failure(error.message);
