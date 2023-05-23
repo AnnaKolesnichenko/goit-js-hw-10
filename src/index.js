@@ -88,4 +88,4 @@ function onErrorAlert() {
     Notiflix.Notify.failure("Oops, there is no country with that name");
 }
 
-searchInput.addEventListener('input', _debounce(onInputSearch, DEBOUNCE_DELAY));
+searchInput.addEventListener('input', _debounce(onInputSearch, DEBOUNCE_DELAY))
